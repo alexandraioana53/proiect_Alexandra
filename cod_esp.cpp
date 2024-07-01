@@ -42,6 +42,29 @@ void setup() {
   servo5.attach(servoPin5);  
 }
 
+void loop() {
+  int numar;
+  WiFiClient client = server.available(); 
+
+  if (client) { 
+    Serial.println("Un client nou s-a conectat!");
+    
+    while (client.connected()) { 
+      if (client.available()) { 
+        String request = client.readString(); 
+        numar = request.toInt(); 
+        
+        Serial.print("Numarul primit: ");
+        Serial.println(randomNumber);
+        
+        gest(numar);
+      }
+    }
+    client.stop(); 
+    Serial.println("Clientul s-a deconectat!");
+  }
+}
+
 void gest(int numar){
   if (numar == 1){  //piatra
     servo1.write(180);
